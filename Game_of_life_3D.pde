@@ -1,12 +1,12 @@
 import peasy.*; //<>//
 
-int dim = 15;
+int dim = 10;
 int len;
 int iteration = 1;
 
 //-----------------------------------------------------//
 //For visualizing neighbors
-ArrayList<Square> outlined = new ArrayList<Square>();
+ArrayList<Box> outlined = new ArrayList<Box>();
 boolean visualize = false;
 int tmp_x = 0;
 int tmp_y = 0;
@@ -17,11 +17,12 @@ int unset_y;
 int unset_z;
 //----------------------------------------------------//
 
-Square[][][] my_squares = new Square[dim][dim][dim];
+Box[][][] my_boxes = new Box[dim][dim][dim];
 PeasyCam cam;
 
 void setup() {
-  size(800, 800, P3D);
+  //size(800, 800, P3D);
+  fullScreen(P3D);
   len = (width / 2) / dim;
   cam = new PeasyCam(this, 800);
   make_squares();
@@ -53,7 +54,7 @@ void update_board() {
       
         //Get neighbor count for curr square
         int neighbors = 0;
-        Square curr = my_squares[i][j][k];
+        Box curr = my_boxes[i][j][k];
         
         //Loop to check neighbors
         for (int x = -1; x < 2; x += 1) {
@@ -68,7 +69,7 @@ void update_board() {
               int check_y = (j + y + dim) % dim;
               int check_z = (k + z + dim) % dim;
               
-              if (my_squares[check_x][check_y][check_z].get_status() == 1) {
+              if (my_boxes[check_x][check_y][check_z].get_status() == 1) {
                 neighbors += 1;
               }
             }
@@ -94,7 +95,7 @@ void draw_squares() {
   for (int x = 0; x < dim; x += 1) {
     for (int y = 0; y < dim; y += 1) {
        for (int z = 0; z < dim; z += 1) {
-          my_squares[x][y][z].draw_me();
+          my_boxes[x][y][z].draw_me();
        }      
     }
   }
@@ -106,8 +107,8 @@ void make_squares() {
   for (int x = 0; x < dim; x += 1) {
     for (int y = 0; y < dim; y += 1) {
        for (int z = 0; z < dim; z += 1) {
-          Square new_square = new Square(x * len - offset, y * len - offset, z * len - offset, len);
-          my_squares[x][y][z] = new_square;
+          Box new_square = new Box(x * len - offset, y * len - offset, z * len - offset, len);
+          my_boxes[x][y][z] = new_square;
        }      
     }
   }
@@ -138,7 +139,7 @@ void display_neighbors() {
   for(int x = 0; x < dim; x += 1) {
     for (int y = 0; y < dim; y += 1) {
       for (int z = 0; z < dim; z += 1) {
-        my_squares[x][y][z].display_neighbors();
+        my_boxes[x][y][z].display_neighbors();
       }
     }
   }
@@ -152,12 +153,12 @@ void show_neighbors() {
   
   //Set current square and try to unset previous square
   try {
-    my_squares[unset_x][unset_y][unset_z].unset_current();
+    my_boxes[unset_x][unset_y][unset_z].unset_current();
   } catch (Exception e) {}
   
-  my_squares[tmp_x][tmp_y][tmp_z].set_current();
+  my_boxes[tmp_x][tmp_y][tmp_z].set_current();
   
-  outlined = new ArrayList<Square>();
+  outlined = new ArrayList<Box>();
   
   //Loop to check neighbors
   for (int x = -1; x < 2; x += 1) {
@@ -172,8 +173,8 @@ void show_neighbors() {
         int Y = (tmp_y + y + dim) % dim;
         int Z = (tmp_z + z + dim) % dim;
         
-        my_squares[X][Y][Z].set_outline();
-        outlined.add(my_squares[X][Y][Z]);
+        my_boxes[X][Y][Z].set_outline();
+        outlined.add(my_boxes[X][Y][Z]);
         
       }
     }

@@ -96,9 +96,9 @@ class Box {
       if (curr_state == 1) {
         fill(255);
       } else {
-        noFill();
+        fill(255, 50);
       }
-      stroke(0);
+      noStroke();
     }
     
     //Only draw if alive or neighbor
