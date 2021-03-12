@@ -21,8 +21,8 @@ Box[][][] my_boxes = new Box[dim][dim][dim];
 PeasyCam cam;
 
 void setup() {
-  //size(800, 800, P3D);
-  fullScreen(P3D);
+  size(800, 800, P3D);
+  //fullScreen(P3D);
   len = (width / 2) / dim;
   cam = new PeasyCam(this, 800);
   make_squares();
